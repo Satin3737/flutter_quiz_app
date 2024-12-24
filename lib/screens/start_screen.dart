@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_quiz_app/enum.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class StartScreen extends StatelessWidget {
-  const StartScreen(this.switchScreen, {super.key});
+  const StartScreen({super.key, required this.switchScreen});
 
   final void Function(Screen screen) switchScreen;
 
@@ -21,9 +22,13 @@ class StartScreen extends StatelessWidget {
           Title(
             title: 'Learn Flutter the fun way!',
             color: Colors.white,
-            child: const Text(
+            child: Text(
               'Learn Flutter the fun way!',
-              style: TextStyle(fontSize: 24, color: Colors.white),
+              style: GoogleFonts.lato(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
             ),
           ),
           const SizedBox(height: 32),

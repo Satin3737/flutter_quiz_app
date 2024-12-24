@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_quiz_app/data/questions.dart';
 import 'package:flutter_quiz_app/enum.dart';
-import 'package:flutter_quiz_app/questions_screen.dart';
-import 'package:flutter_quiz_app/start_screen.dart';
-
-final duration = Duration(milliseconds: 300);
-final curve = Curves.easeInOut;
+import 'package:flutter_quiz_app/screens/questions_screen.dart';
+import 'package:flutter_quiz_app/screens/result_screen.dart';
+import 'package:flutter_quiz_app/screens/start_screen.dart';
 
 class Quiz extends StatefulWidget {
   const Quiz({super.key});
@@ -15,32 +14,38 @@ class Quiz extends StatefulWidget {
 
 class _QuizState extends State<Quiz> {
   var currentScreen = Screen.startScreen;
-  var roll = 1;
-  var _opacity = 1.0;
+  List<String> selectedAnswers = [];
+
+  void dropSelectedAnswers() => selectedAnswers = [];
 
   void switchScreen(Screen screen) {
     setState(() {
-      _opacity = 0.0;
+      currentScreen = screen;
     });
+  }
 
-    Future.delayed(duration, () {
-      setState(() {
-        currentScreen = screen;
-        _opacity = 1.0;
-      });
-    });
+  void onAnswerSelect(String answer) {
+    selectedAnswers.add(answer);
+
+    if (questions.length == selectedAnswers.length) {
+      switchScreen(Screen.resultScreen);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    Widget screenWidget = StartScreen(switchScreen);
-
-    if (currentScreen == Screen.startScreen) {
-      screenWidget = StartScreen(switchScreen);
-    }
+    Widget screenWidget = StartScreen(switchScreen: switchScreen);
 
     if (currentScreen == Screen.questionsScreen) {
-      screenWidget = QuestionsScreen(switchScreen);
+      screenWidget = QuestionsScreen(onAnswerSelect: onAnswerSelect);
+    }
+
+    if (currentScreen == Screen.resultScreen) {
+      screenWidget = ResultScreen(
+        switchScreen: switchScreen,
+        selectedAnswers: selectedAnswers,
+        dropSelectedAnswers: dropSelectedAnswers,
+      );
     }
 
     return MaterialApp(
@@ -54,12 +59,7 @@ class _QuizState extends State<Quiz> {
               colors: [Colors.deepPurple, Colors.purple],
             ),
           ),
-          child: AnimatedOpacity(
-            opacity: _opacity,
-            duration: duration,
-            curve: curve,
-            child: screenWidget,
-          ),
+          child: screenWidget,
         ),
       ),
     );
