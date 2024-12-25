@@ -52,6 +52,10 @@ class _QuizState extends State<Quiz> {
       title: 'Quiz App',
       home: Scaffold(
         body: Container(
+          padding: const EdgeInsets.symmetric(
+            vertical: 72,
+            horizontal: 24,
+          ),
           decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topLeft,

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_quiz_app/data/questions.dart';
 import 'package:flutter_quiz_app/enum.dart';
+import 'package:flutter_quiz_app/ui/question_summary.dart';
+import 'package:flutter_quiz_app/ui/quiz_button.dart';
+import 'package:flutter_quiz_app/ui/screen_title.dart';
 
 class ResultScreen extends StatelessWidget {
   const ResultScreen({
@@ -31,27 +34,28 @@ class ResultScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 32),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text('You answered all the questions!'),
-          SizedBox(height: 32),
-          Text('Your score is 5 out of 5'),
-          SizedBox(height: 32),
-          TextButton(
-            onPressed: () => {
-              switchScreen(Screen.startScreen),
-              dropSelectedAnswers(),
-            },
-            child: Text(
-              'Play Again',
-            ),
-          ),
-        ],
-      ),
+    final summary = getSummaryData();
+    final correctAnswersNumber = summary.where((data) {
+      return data['correctAnswer'] == data['userAnswer'];
+    }).length;
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      spacing: 32,
+      children: [
+        ScreenTitle(
+          'You answered $correctAnswersNumber questions of ${questions.length} correctly!',
+        ),
+        QuestionSummary(summary: summary),
+        QuizButton(
+          label: 'Play Again',
+          icon: Icons.restart_alt,
+          onPressed: () => {
+            switchScreen(Screen.startScreen),
+            dropSelectedAnswers(),
+          },
+        )
+      ],
     );
   }
 }

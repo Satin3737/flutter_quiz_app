@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_quiz_app/data/questions.dart';
 import 'package:flutter_quiz_app/ui/answer_button.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_quiz_app/ui/screen_title.dart';
 
 class QuestionsScreen extends StatefulWidget {
   const QuestionsScreen({super.key, required this.onAnswerSelect});
@@ -30,30 +30,20 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
     final currentQuestion = questions[currentQuestionIndex];
 
     return Center(
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 32),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              currentQuestion.question,
-              style: GoogleFonts.lato(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 32),
-            ...currentQuestion.getShuffledAnswers().map((answer) {
-              return AnswerButton(
-                answer: answer,
-                onPressed: () => onAnswerTap(answer),
-              );
-            }),
-          ],
-        ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisAlignment: MainAxisAlignment.center,
+        spacing: 4,
+        children: [
+          ScreenTitle(currentQuestion.question),
+          const SizedBox(height: 16),
+          ...currentQuestion.getShuffledAnswers().map((answer) {
+            return AnswerButton(
+              answer: answer,
+              onPressed: () => onAnswerTap(answer),
+            );
+          }),
+        ],
       ),
     );
   }
