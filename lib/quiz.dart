@@ -18,11 +18,7 @@ class _QuizState extends State<Quiz> {
 
   void dropSelectedAnswers() => selectedAnswers = [];
 
-  void switchScreen(Screen screen) {
-    setState(() {
-      currentScreen = screen;
-    });
-  }
+  void switchScreen(Screen screen) => setState(() => currentScreen = screen);
 
   void onAnswerSelect(String answer) {
     selectedAnswers.add(answer);
